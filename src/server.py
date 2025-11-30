@@ -16,7 +16,9 @@ from .tools import (
     StockDepthTool,
     TimestampTool,
     TechnicalIndicatorsTool,
-    MoneyFlowTool
+    MoneyFlowTool,
+    IndexAnalysisTool,
+    SectorAnalysisTool
 )
 
 # 配置日志
@@ -50,7 +52,9 @@ TOOLS = [
     StockDepthTool,
     TimestampTool,
     TechnicalIndicatorsTool,
-    MoneyFlowTool
+    MoneyFlowTool,
+    IndexAnalysisTool,
+    SectorAnalysisTool
 ]
 
 

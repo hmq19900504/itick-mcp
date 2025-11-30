@@ -9,6 +9,8 @@ from .stock_depth import StockDepthTool
 from .timestamp import TimestampTool
 from .technical_indicators import TechnicalIndicatorsTool
 from .money_flow import MoneyFlowTool
+from .index_analysis import IndexAnalysisTool
+from .sector_analysis import SectorAnalysisTool
 
 __all__ = [
     "StockQuoteTool",
@@ -17,5 +19,7 @@ __all__ = [
     "StockDepthTool",
     "TimestampTool",
     "TechnicalIndicatorsTool",
-    "MoneyFlowTool"
+    "MoneyFlowTool",
+    "IndexAnalysisTool",
+    "SectorAnalysisTool"
 ]
