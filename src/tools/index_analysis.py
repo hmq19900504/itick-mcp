@@ -13,11 +13,16 @@ class IndexAnalysisTool:
     name = "itick_index_analysis"
     description = """分析大盘指数和板块指数的实时行情、历史走势和市场强弱对比。
 
+✅ **市场支持说明**:
+- ✅ **A股指数**: 上证指数、深证成指、创业板指、科创50、沪深300等
+- ✅ **港股指数**: 恒生指数、恒生科技、恒生国企等
+- ✅ **美股指数**: 标普500、纳斯达克、道琼斯等
+- 🌍 **全球指数**: 支持多个国家和地区的主要指数
+
 📊 **支持的指数类型**:
 - 🌍 大盘指数: 上证指数、深证成指、创业板指、科创50、沪深300等
-- 🏭 行业板块: 科技、医药、消费、金融、地产、新能源等
 - 🌏 国际指数: 恒生指数、纳斯达克、道琼斯、标普500等
-- 📈 概念板块: 人工智能、半导体、新能源车、元宇宙等
+- 📈 行业指数: 科技、医药、消费、金融等行业指数
 
 💡 **核心功能**:
 - 实时指数行情（最新点位、涨跌幅）
@@ -27,15 +32,19 @@ class IndexAnalysisTool:
 - 成交量能分析（量价配合、资金活跃度）
 
 📍 **常用指数代码**:
-- 上证指数: 000001.SH
-- 深证成指: 399001.SZ
-- 创业板指: 399006.SZ
-- 科创50: 000688.SH
-- 沪深300: 000300.SH
-- 中证500: 000905.SH
-- 恒生指数: HSI.HK
-- 纳斯达克: IXIC.US
-- 标普500: SPX.US
+- 上证指数: 000001
+- 深证成指: 399001
+- 创业板指: 399006
+- 科创50: 000688
+- 沪深300: 000300
+- 中证500: 000905
+- 恒生指数: HSI
+- 恒生科技: HSTECH
+- 标普500: SPX
+- 纳斯达克: IXIC
+- 道琼斯: DJI
+
+💡 **注意**: 指数API使用统一的代码格式，不需要区分市场前缀（如SH/SZ/HK/US）
 
 💡 **主要用途**:
 - 判断大盘整体趋势
@@ -56,6 +65,13 @@ class IndexAnalysisTool:
 - "分析创业板指近期走势"
 - "对比沪深300和中证500的强弱"
 - "查看恒生指数和恒生科技指数"
+- "分析标普500和纳斯达克的走势"
+- "对比A股、港股、美股三大市场"
+
+⚠️ **注意事项**:
+- 指数代码不需要市场前缀（直接用000001，不是SH.000001）
+- region参数会被自动设置为'GB'（指数API的标准）
+- 确保指数代码正确，错误的代码会返回空数据
 """
     
     parameters = {
@@ -68,20 +84,20 @@ class IndexAnalysisTool:
                     "properties": {
                         "region": {
                             "type": "string",
-                            "description": "市场代码 (SH/SZ/HK/US等)"
+                            "description": "市场代码（可选，仅用于标识，实际API调用统一使用GB）。CN=中国，HK=香港，US=美国等"
                         },
                         "code": {
                             "type": "string",
-                            "description": "指数代码"
+                            "description": "指数代码（如：000001=上证指数, HSI=恒生指数, SPX=标普500, IXIC=纳斯达克）"
                         },
                         "name": {
                             "type": "string",
                             "description": "指数名称（可选，用于显示）"
                         }
                     },
-                    "required": ["region", "code"]
+                    "required": ["code"]
                 },
-                "description": "要分析的指数列表。例如: [{region:'SH', code:'000001', name:'上证指数'}, {region:'SZ', code:'399001', name:'深证成指'}]",
+                "description": "要分析的指数列表。例如: [{code:'000001', name:'上证指数'}, {code:'HSI', name:'恒生指数'}, {code:'SPX', name:'标普500'}]。注意：只需要code，region会自动设置",
                 "minItems": 1
             },
             "period": {
@@ -107,17 +123,18 @@ class IndexAnalysisTool:
     }
     
     # 常用指数映射
+    # 注意：指数API统一使用region='GB'，这里的region仅供参考识别市场
     COMMON_INDICES = {
-        "上证指数": {"region": "SH", "code": "000001"},
-        "深证成指": {"region": "SZ", "code": "399001"},
-        "创业板指": {"region": "SZ", "code": "399006"},
-        "科创50": {"region": "SH", "code": "000688"},
-        "沪深300": {"region": "SH", "code": "000300"},
-        "中证500": {"region": "SH", "code": "000905"},
-        "中证1000": {"region": "SH", "code": "000852"},
-        "北证50": {"region": "BJ", "code": "899050"},
+        "上证指数": {"region": "CN", "code": "000001"},
+        "深证成指": {"region": "CN", "code": "399001"},
+        "创业板指": {"region": "CN", "code": "399006"},
+        "科创50": {"region": "CN", "code": "000688"},
+        "沪深300": {"region": "CN", "code": "000300"},
+        "中证500": {"region": "CN", "code": "000905"},
+        "中证1000": {"region": "CN", "code": "000852"},
         "恒生指数": {"region": "HK", "code": "HSI"},
         "恒生科技": {"region": "HK", "code": "HSTECH"},
+        "恒生国企": {"region": "HK", "code": "HSCEI"},
         "纳斯达克": {"region": "US", "code": "IXIC"},
         "标普500": {"region": "US", "code": "SPX"},
         "道琼斯": {"region": "US", "code": "DJI"},
@@ -203,21 +220,26 @@ class IndexAnalysisTool:
             index_results = []
             
             for index_info in indices:
-                region = index_info.get("region")
                 code = index_info.get("code")
-                name = index_info.get("name", f"{region}.{code}")
+                region = index_info.get("region", "")  # region现在是可选的，仅用于显示
+                name = index_info.get("name", code)  # 默认用代码作为名称
                 
-                if not region or not code:
-                    continue
+                if not code:
+                    continue  # 只检查code，region不再必需
                 
                 try:
-                    # 获取实时行情
-                    quote_data = await client.get_stock_quote(str(region), str(code))
+                    # 获取实时行情 - 使用指数专用API
+                    # 注意：iTick的指数API统一使用region='GB'
+                    quote_data = await client.get_index_quote(code=str(code), region="GB")
                     
-                    # 获取历史K线
-                    kline_data = await client.get_stock_kline(
-                        region=str(region),
+                    # 检查quote_data是否为None或空
+                    if not quote_data:
+                        raise Exception(f"API返回空数据，可能是指数代码不正确")
+                    
+                    # 获取历史K线 - 使用指数专用API
+                    kline_data = await client.get_index_kline(
                         code=str(code),
+                        region="GB",
                         period=period,
                         limit=days
                     )

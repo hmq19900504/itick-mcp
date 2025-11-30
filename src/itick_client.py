@@ -201,6 +201,90 @@ class ItickClient:
             params={"region": region, "code": code}
         )
     
+    # ============ 指数 API ============
+    
+    async def get_index_quote(self, code: str, region: str = "GB") -> Dict[str, Any]:
+        """
+        获取指数实时报价
+        
+        注意：iTick 的指数 API 统一使用 region='GB'，无论是A股、港股还是美股指数
+        
+        Args:
+            code: 指数代码（如：SPX, HSI, 000001, 399006）
+            region: 市场代码（默认'GB'，指数API统一使用此值）
+            
+        Returns:
+            实时报价数据
+            
+        Examples:
+            标普500: code='SPX', region='GB'
+            恒生指数: code='HSI', region='GB'
+            上证指数: code='000001', region='GB'
+            创业板指: code='399006', region='GB'
+        """
+        return await self._request(
+            "GET",
+            "/indices/quote",
+            params={"region": region, "code": code}
+        )
+    
+    async def get_index_kline(
+        self,
+        code: str,
+        region: str = "GB",
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        period: str = "day",
+        limit: Optional[int] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        获取指数K线数据
+        
+        注意：iTick 的指数 API 统一使用 region='GB'
+        
+        Args:
+            code: 指数代码
+            region: 市场代码（默认'GB'）
+            start_date: 起始日期 (YYYYMMDD)
+            end_date: 结束日期 (YYYYMMDD)
+            period: 周期 (1min/5min/60min/day/week/month)
+            limit: 返回数据条数限制
+            
+        Returns:
+            K线数据列表
+        """
+        # 周期到 kType 的映射
+        period_to_ktype = {
+            "1min": 1,
+            "5min": 5,
+            "60min": 8,
+            "day": 2,
+            "week": 3,
+            "month": 4
+        }
+        
+        ktype = period_to_ktype.get(period, 2)
+        
+        params = {
+            "region": region,
+            "code": code,
+            "kType": ktype
+        }
+        if start_date:
+            params["start_date"] = start_date
+        if end_date:
+            params["end_date"] = end_date
+        if limit:
+            params["limit"] = limit
+        
+        result = await self._request("GET", "/indices/kline", params=params)
+        # K线数据应该是数组
+        if isinstance(result, list):
+            return result
+        elif isinstance(result, dict) and "data" in result:
+            return result.get("data", [])
+        return []
+    
     async def close(self):
         """关闭 HTTP 客户端"""
         await self.client.aclose()
