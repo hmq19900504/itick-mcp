@@ -175,6 +175,55 @@ uvicorn src.server:app --host 0.0.0.0 --port 3000
 "查看今天的日期"
 ```
 
+### 🆕 6. itick_technical_indicators - 技术指标分析
+
+计算股票的技术指标，包括MACD、RSI、KDJ、BOLL、MA等。
+
+**参数**：
+- `region` (必填): 市场代码
+- `code` (必填): 股票代码
+- `indicators` (可选): 指标列表，默认 ["macd", "rsi"]
+  - `macd` - MACD指标（趋势跟踪）
+  - `rsi` - 相对强弱指标（超买超卖）
+  - `kdj` - 随机指标
+  - `boll` - 布林带
+  - `ma` - 移动平均线
+  - `ema` - 指数移动平均线
+  - `all` - 全部指标
+- `period` (可选): K线周期，默认 "day"
+- `limit` (可选): 数据条数，默认200
+
+**示例**：
+```
+"计算腾讯(700.HK)的MACD和RSI指标"
+"分析茅台(600519.SH)的KDJ超买超卖情况"
+"查看苹果(AAPL)的布林带和均线系统"
+```
+
+### 🆕 7. itick_money_flow - 资金流向分析
+
+分析股票的资金流向分布，包括主力资金、大单、中单、小单的流入流出。
+
+**参数**：
+- `region` (必填): 市场代码
+- `code` (必填): 股票代码
+- `period` (可选): 分析周期，默认 "day"
+- `days` (可选): 分析天数，默认10
+
+**核心指标**：
+- 🐋 超大单（≥50万）- 机构/大户资金
+- 🐘 大单（20-50万）- 中大户资金
+- 🐕 中单（5-20万）- 中户资金
+- 🐁 小单（<5万）- 散户资金
+- 💪 主力资金 = 超大单 + 大单
+
+**示例**：
+```
+"查看腾讯(700.HK)近期资金流向"
+"分析茅台(600519.SH)主力资金动向"
+"查询苹果(AAPL)大单资金流入情况"
+```
+
 ## 💡 使用示例
 
 ### 综合分析示例
@@ -193,6 +242,10 @@ uvicorn src.server:app --host 0.0.0.0 --port 3000
 "获取比亚迪(002594.SZ)最近3个月的日K线数据，分析趋势"
 
 "查看宁德时代(300750.SZ)的5分钟K线，观察盘中波动"
+
+"计算腾讯(700.HK)的MACD、RSI、KDJ等技术指标，判断买卖时机"
+
+"分析茅台(600519.SH)近20日的资金流向，查看主力资金是否流入"
 ```
 
 ## 🔧 开发指南
@@ -208,15 +261,18 @@ itick-mcp/
 │   ├── itick_client.py    # iTick API 客户端
 │   └── tools/             # MCP 工具模块
 │       ├── __init__.py
-│       ├── stock_quote.py
-│       ├── stock_kline.py
-│       ├── stock_tick.py
-│       ├── stock_depth.py
-│       └── timestamp.py
+│       ├── stock_quote.py        # 实时报价
+│       ├── stock_kline.py        # K线数据
+│       ├── stock_tick.py         # 逐笔成交
+│       ├── stock_depth.py        # 盘口深度
+│       ├── timestamp.py          # 时间戳
+│       ├── technical_indicators.py  # 🆕 技术指标
+│       └── money_flow.py         # 🆕 资金流向
 ├── requirements.txt
 ├── .env.example
 ├── Dockerfile
-└── README.md
+├── README.md
+└── NEW_FEATURES.md       # 🆕 新功能文档
 ```
 
 ### 添加新工具
