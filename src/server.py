@@ -122,6 +122,11 @@ async def mcp_endpoint(request: Request):
                 "id": request_id
             })
         
+        # 处理通知（没有 id 的消息，不需要响应）
+        elif method == "notifications/initialized":
+            logger.info("[MCP] 收到 initialized 通知")
+            return JSONResponse({"jsonrpc": "2.0"}, status_code=200)
+        
         # 处理 tools/list 请求
         elif method == "tools/list":
             tools_list = [
