@@ -99,7 +99,7 @@ python -m src.server
       "url": "http://localhost:3000/mcp",
       "timeout": 600,
       "headers": {
-        "X-Itick-Token": "d3de0307d463469697ac2faf27f5f5e02cedbde8e2d1400c9476d45adcf6a859"
+        "X-Itick-Token": "xxxxxxx"
       }
     }
   }
