@@ -11,7 +11,12 @@ class StockKlineTool:
     """股票K线数据工具 - 获取OHLCV格式的K线数据"""
     
     name = "itick_stock_kline"
-    description = """获取股票的K线（蜡烛图）历史数据，包含开盘价(Open)、最高价(High)、最低价(Low)、收盘价(Close)、成交量(Volume)、成交额(Turnover)等信息。
+    description = """获取【个股】的K线（蜡烛图）历史数据，包含开盘价(Open)、最高价(High)、最低价(Low)、收盘价(Close)、成交量(Volume)、成交额(Turnover)等信息。
+
+⚠️ **重要提示 - 工具适用范围**:
+- ✅ 适用于: 个股（如腾讯、阿里巴巴、茅台、比亚迪等具体公司股票）
+- ❌ 不适用于: 大盘指数（如恒生指数、上证指数等）→ 指数K线请使用 itick_index_analysis
+- ❌ 不适用于: 板块（如科技板块、医药板块等）→ 板块分析请使用 itick_sector_analysis
 
 📊 **主要用途**:
 - 分析股票价格走势和趋势

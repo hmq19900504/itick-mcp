@@ -11,7 +11,12 @@ class StockTickTool:
     """股票Tick数据工具 - 获取逐笔成交记录"""
     
     name = "itick_stock_tick"
-    description = """获取股票实时Tick（逐笔成交）数据，包含最新成交价格、成交量和成交时间。
+    description = """获取【个股】实时Tick（逐笔成交）数据，包含最新成交价格、成交量和成交时间。
+
+⚠️ **重要提示 - 工具适用范围**:
+- ✅ 适用于: 个股（如腾讯、阿里巴巴、茅台、比亚迪等具体公司股票）
+- ❌ 不适用于: 大盘指数（如恒生指数、上证指数等）→ 请使用 itick_index_analysis
+- ❌ 不适用于: 板块（如科技板块、医药板块等）→ 请使用 itick_sector_analysis
 
 📊 **数据内容**:
 - 最新成交价格 (Latest Price)

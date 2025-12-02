@@ -12,7 +12,12 @@ class TechnicalIndicatorsTool:
     """技术指标分析工具 - 计算MACD、RSI、KDJ等技术指标"""
     
     name = "itick_technical_indicators"
-    description = """计算股票的技术指标，包括MACD、RSI、KDJ、BOLL、MA等常用技术分析指标。
+    description = """计算【个股】的技术指标，包括MACD、RSI、KDJ、BOLL、MA等常用技术分析指标。
+
+⚠️ **重要提示 - 工具适用范围**:
+- ✅ 适用于: 个股（如腾讯、阿里巴巴、茅台、比亚迪等具体公司股票）
+- ❌ 不适用于: 大盘指数（如恒生指数、上证指数等）→ 指数分析请使用 itick_index_analysis
+- ❌ 不适用于: 板块（如科技板块、医药板块等）→ 板块分析请使用 itick_sector_analysis
 
 📊 **支持的指标**:
 - MACD (指数平滑异同移动平均线): 趋势跟踪动量指标，包含DIF、DEA、MACD柱
